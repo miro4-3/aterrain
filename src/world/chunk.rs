@@ -91,7 +91,7 @@ impl Chunk {
     /// Missing neighbors are treated as air (face is generated).
     pub fn generate_chunk_mesh_with_neighbors(
         &self,
-        neighbors: [Option<&[u8; CHUNK_VOLUME]>; 6],
+        neighbors: [Option<&[u8; CHUNK_VOLUME]>; 6]
     ) -> PackedMesh {
         let mut vertices: Vec<PackedVertex> = Vec::new();
         let mut indices: Vec<u16> = Vec::new();
@@ -106,7 +106,7 @@ impl Chunk {
                         continue;
                     }
 
-                    // +Y face (0)
+                    // +Y face
                     let empty = if y == last {
                         match neighbors[0] {
                             Some(blocks) => blocks[Self::index(x, 0, z)] == 0,
@@ -119,7 +119,7 @@ impl Chunk {
                         Self::add_face(&mut vertices, &mut indices, x, y, z, 0, id);
                     }
 
-                    // -Y face (1)
+                    // -Y face
                     let empty = if y == 0 {
                         match neighbors[1] {
                             Some(blocks) => blocks[Self::index(x, last, z)] == 0,
@@ -132,7 +132,7 @@ impl Chunk {
                         Self::add_face(&mut vertices, &mut indices, x, y, z, 1, id);
                     }
 
-                    // +X face (2)
+                    // +X face
                     let empty = if x == last {
                         match neighbors[2] {
                             Some(blocks) => blocks[Self::index(0, y, z)] == 0,
@@ -145,7 +145,7 @@ impl Chunk {
                         Self::add_face(&mut vertices, &mut indices, x, y, z, 2, id);
                     }
 
-                    // -X face (3)
+                    // -X face
                     let empty = if x == 0 {
                         match neighbors[3] {
                             Some(blocks) => blocks[Self::index(last, y, z)] == 0,
@@ -158,7 +158,7 @@ impl Chunk {
                         Self::add_face(&mut vertices, &mut indices, x, y, z, 3, id);
                     }
 
-                    // +Z face (4)
+                    // +Z face
                     let empty = if z == last {
                         match neighbors[4] {
                             Some(blocks) => blocks[Self::index(x, y, 0)] == 0,
@@ -171,7 +171,7 @@ impl Chunk {
                         Self::add_face(&mut vertices, &mut indices, x, y, z, 4, id);
                     }
 
-                    // -Z face (5)
+                    // -Z face
                     let empty = if z == 0 {
                         match neighbors[5] {
                             Some(blocks) => blocks[Self::index(x, y, last)] == 0,

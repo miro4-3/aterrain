@@ -6,7 +6,7 @@ pub enum ChunkState {
     Ready,
     Unloading,
 }
-
+// gg blud doesnt know how to do multi threading
 fn call() {
     
-}
+} 

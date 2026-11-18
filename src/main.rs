@@ -44,20 +44,18 @@ async fn main() {
         );
         let mut cache = ChunkGpuCache::new();
 
-        // Pass 1: store all block data so neighbors are available for meshing
-        for x in 0..32 {
-            for z in 0..32 {
-                for y in 0..32 {
+        for x in 0..16 {
+            for z in 0..16 {
+                for y in 0..16 {
                     let chunk = generate_test_world();
                     cache.store_blocks((x, y, z), chunk.blocks);
                 }
             }
         }
 
-        // Pass 2: generate meshes with full cross-chunk neighbor data and upload
-        for x in 0..32 {
-            for z in 0..32 {
-                for y in 0..2 {
+        for x in 0..16 {
+            for z in 0..16 {
+                for y in 0..16 {
                     let pos = (x, y, z);
                     let neighbors = cache.get_neighbors(pos);
                     let blocks = cache.get_block_data(pos).copied().expect("failed to cpy");
@@ -98,7 +96,11 @@ fn generate_test_world() -> Chunk {
     let mut chunk = Chunk::new();
     for x in 0..CHUNK_SIZE {
         for z in 0..CHUNK_SIZE {
-            chunk.set_block(z, x / 2, x & 6, 1);
+            for y in 0..CHUNK_SIZE {
+                if x % 4 == 0 && y % 4 == 0 && z % 4 == 0 {
+                    chunk.set_block(x, y, z, 1);
+                }
+            }
         }
     }
     chunk

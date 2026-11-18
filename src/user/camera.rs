@@ -93,7 +93,7 @@ impl Camera {
             position: self.position,
             target,
             up: Vec3::new(0.0, 1.0, 0.0),
-            fovy: (60.0_f32).to_radians(),
+            fovy: (90.0_f32).to_radians(),
             aspect: Some(screen_width() / screen_height()),
             z_near: 0.1,
             z_far: f32::MAX,

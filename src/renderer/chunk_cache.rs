@@ -26,43 +26,32 @@ impl ChunkGpuCache {
         blocks: [u8; CHUNK_VOLUME],
         mesh: &PackedMesh
     ) {
-        // Destroy old GPU mesh if any (keep block data intact for neighbor lookups)
         if let Some(mesh) = self.chunks.remove(&position) {
             mesh.destroy(ctx);
         }
-
-        // Store/update block data
         self.blocks.insert(position, blocks);
 
-        // Upload new GPU mesh
         if let Some(gpu_mesh) = mesh.upload(ctx) {
             self.chunks.insert(position, gpu_mesh);
         }
     }
 
-    /// Stores raw block data for a chunk without GPU upload.
-    /// Used to populate neighbor data before mesh generation.
     pub fn store_blocks(&mut self, position: ChunkPos, blocks: [u8; CHUNK_VOLUME]) {
         self.blocks.insert(position, blocks);
     }
 
-    /// Returns the raw block data for a chunk, if present.
     pub fn get_block_data(&self, position: ChunkPos) -> Option<&[u8; CHUNK_VOLUME]> {
         self.blocks.get(&position)
     }
 
-    /// Resolves all 6 neighboring chunk block references in one call.
-    ///
-    /// Order matches FACES: [+Y, -Y, +X, -X, +Z, -Z].
-    /// Exactly 6 HashMap lookups per chunk (not per voxel).
     pub fn get_neighbors(&self, position: ChunkPos) -> [Option<&[u8; CHUNK_VOLUME]>; 6] {
         [
-            self.blocks.get(&(position.0, position.1 + 1, position.2)),     // +Y
-            self.blocks.get(&(position.0, position.1 - 1, position.2)),     // -Y
-            self.blocks.get(&(position.0 + 1, position.1, position.2)),     // +X
-            self.blocks.get(&(position.0 - 1, position.1, position.2)),     // -X
-            self.blocks.get(&(position.0, position.1, position.2 + 1)),     // +Z
-            self.blocks.get(&(position.0, position.1, position.2 - 1)),     // -Z
+            self.blocks.get(&(position.0, position.1 + 1, position.2)), // +Y
+            self.blocks.get(&(position.0, position.1 - 1, position.2)), // -Y
+            self.blocks.get(&(position.0 + 1, position.1, position.2)), // +X
+            self.blocks.get(&(position.0 - 1, position.1, position.2)), // -X
+            self.blocks.get(&(position.0, position.1, position.2 + 1)), // +Z
+            self.blocks.get(&(position.0, position.1, position.2 - 1)), // -Z
         ]
     }
 

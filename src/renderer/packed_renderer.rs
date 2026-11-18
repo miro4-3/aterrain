@@ -19,9 +19,9 @@ impl PackedRenderer {
                     images: vec![],
                     uniforms: UniformBlockLayout {
                         uniforms: vec![
-                        UniformDesc::new("u_MVP", UniformType::Mat4),
-                        UniformDesc::new("u_ChunkPos", UniformType::Float4),
-                    ],
+                            UniformDesc::new("u_MVP", UniformType::Mat4),
+                            UniformDesc::new("u_ChunkPos", UniformType::Float4)
+                        ],
                     },
                 }
             )
@@ -50,7 +50,13 @@ impl PackedRenderer {
         ctx.apply_pipeline(&self.pipeline);
     }
 
-    pub fn draw(&self, ctx: &mut dyn RenderingBackend, mesh: &GpuPackedMesh, mvp: [[f32; 4]; 4], chunk_pos: [f32; 4]) {
+    pub fn draw(
+        &self,
+        ctx: &mut dyn RenderingBackend,
+        mesh: &GpuPackedMesh,
+        mvp: [[f32; 4]; 4],
+        chunk_pos: [f32; 4]
+    ) {
         ctx.apply_bindings(&mesh.bindings);
         ctx.apply_uniforms(
             UniformsSource::table(
@@ -64,7 +70,11 @@ impl PackedRenderer {
     }
 
     pub fn set_mvp(&self, ctx: &mut dyn RenderingBackend, mvp: &Mat4) {
-        ctx.apply_uniforms(UniformsSource::table(&(Uniforms { u_MVP: mvp.to_cols_array_2d(), u_ChunkPos: [0.0; 4] })));
+        ctx.apply_uniforms(
+            UniformsSource::table(
+                &(Uniforms { u_MVP: mvp.to_cols_array_2d(), u_ChunkPos: [0.0; 4] })
+            )
+        );
     }
 }
 #[repr(C)]
