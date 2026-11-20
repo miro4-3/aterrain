@@ -19,8 +19,8 @@ void main() {
   if (axis == 0u) {
     v_color = vec3(0.0, 1.0, 0.0);
   } else if (axis == 1u) {
-    v_color = vec3(1.0, 0.0, 0.0);
+    v_color = vec3(1.0, 0.1, 0.1);
   } else {
-    v_color = vec3(0.0, 0.0, 1.0);
+    v_color = vec3(0.1, 0.1, 1.0);
   }
 }

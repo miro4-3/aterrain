@@ -5,6 +5,7 @@ use macroquad::math::{ Vec3, vec3 };
 use macroquad::window::{ screen_width, screen_height };
 use macroquad::camera::{ Camera3D, Projection };
 
+use crate::GLOBAL_CONSTANTS::CHUNK_SIZE;
 use crate::user::setting::CameraSetting;
 
 pub struct Camera {
@@ -31,6 +32,13 @@ impl Camera {
     pub fn update(&mut self, setting: &CameraSetting, dt: f32) {
         self.look_with_mouse(setting.mouse_sensitivity);
         self.keyboard(setting, dt);
+    }
+    pub fn get_current_chunk(&self) -> (i32, i32, i32) {
+        let chunk_size = CHUNK_SIZE as f32;
+        let cx = (self.position.x / chunk_size).floor() as i32;
+        let cy = (self.position.y / chunk_size).floor() as i32;
+        let cz = (self.position.z / chunk_size).floor() as i32;
+        (cx, cy, cz)
     }
     fn look_with_mouse(&mut self, sensitivity: f32) {
         let delta = mouse_delta_position();

@@ -7,4 +7,5 @@ edition = "2024"
 bytemuck = { version = "1.25.2", features = ["derive"]}
 macroquad = "0.4.16"
 miniquad = "0.4.11"
+noise = "0.9.0"
 

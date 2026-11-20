@@ -7,7 +7,7 @@ pub struct CameraSetting {
 impl Default for CameraSetting {
     fn default() -> Self {
         Self {
-            walk_speed: 5.0,
+            walk_speed: 100.0,
             mouse_sensitivity: 0.5,
             render_distance: 16,
         }
